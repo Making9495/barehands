@@ -30,7 +30,7 @@ rem
 rem If this folder has no .git yet because it arrived as a zip, an agent
 rem can wire it up once, keeping barehands.json:
 rem   git init -b main
-rem   git remote add origin https://github.com/jaredrhod/barehands
+rem   git remote add origin https://github.com/Making9495/barehands
 rem   git fetch origin
 rem   git reset --hard origin/main
 

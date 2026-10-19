@@ -1,6 +1,7 @@
 #!/bin/bash
 # barehands — update to the newest version, showing what changed first.
 # Copyright (C) 2026 Jared Rhodenizer
+# Modifications copyright (C) 2026 Making9495
 # SPDX-License-Identifier: AGPL-3.0-or-later
 #
 # Your barehands.json is yours: nothing in this script can touch or overwrite it.
@@ -14,13 +15,20 @@ main() {
     # this folder arrived as a zip: wire it to updates, once, keeping the config
     [ -f "$CFG" ] && cp "$CFG" "$CFG.mine"
     git init -q -b main
-    git remote add origin https://github.com/jaredrhod/barehands
+    git remote add origin https://github.com/Making9495/barehands
     git fetch -q origin
     git reset -q --hard origin/main
     git branch -q --set-upstream-to=origin/main main
     [ -f "$CFG.mine" ] && mv "$CFG.mine" "$CFG"
     echo "wired this folder to updates."
   fi
+
+  # one-time migration: older installs pull from the original upstream repo.
+  case "$(git remote get-url origin 2>/dev/null)" in
+    *github.com/jaredrhod/*)
+      git remote set-url origin https://github.com/Making9495/barehands
+      echo "updates now come from the FS-Home-Assistant fork." ;;
+  esac
 
   git fetch -q origin
   git log --oneline "..@{u}" 2>/dev/null | sed "s/^/  new: /"
